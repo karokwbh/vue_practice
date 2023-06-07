@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <p v-once>{{ msg }}</p>
+    <p>{{ msg }}</p> -->
+
+    <p>{{ html }}123123</p>
+    <p>{{ user }}</p>
+    <!-- <p v-text="test">123123</p>
+    <p v-html="test">123123</p> -->
+    <p v-text="html">抱歉~你的瀏覽器不支援 JavaScript</p>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+
+  <!-- <script type="text/x-template" id="page-template">
+    <span style="color: red">This {{ msg }} should be red.</span>
+  </script> -->
+
+  <script>
+    window.user = 'frank'
+    let data = {
+      msg: 'Hello Vue',
+      html: '<span style="color: red">This should be red.</span>',
+      test: '<img src="aaa.jpg" onerror="window.alert(`Err...`)">'
+    }
+    // Object.freeze(data)
+    // let pokemon = {
+    //   img: 'src',
+    //   title: 'str / html',
+    //   description: 'str / html',
+    //   price: 'number',
+    //   price: {
+    //     type: 'str',
+    //     count: 'number'
+    //   },
+    //   count: 'number'
+    // }
+    function init() {
+      let template = document.getElementById('template').contentWindow.document
+      let vm = new Vue({
+        // el: '#app',
+        // template: `<span style="color: red">This {{ msg }} should be red.</span>`,
+        // template: '#page-template',
+        template: template.getElementById('page-template'),
+        data,
+        // create() {}, // ES6
+        created: function () {
+          console.log(this)
+        },
+      })
+      vm.$mount("#app")
+    }
+
+    // instance & template
+
+    // 1. html template + el option
+    // 2. el option + template option
+    // 3. template options(selector) + vm.$mount
+    // 4. iframe
+  </script>
+  <iframe id="template" src="./iframe.html" frameborder="0" onload="init()"></iframe>
+</body>
+</html>
