@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #app.active {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <!-- <div id="app" :class="{active: isActive}"> -->
+  <div id="app" :class="classArray">
+    <a v-bind:href="link.href" v-bind:target="link.target">{{ link.content }}</a>
+    <br>
+    <input v-bind:type="input.type" :data-aaa="link.content" />
+    <div class="target" :class="classContent" :style="[styleObj, styleObj1]" style="color: blue">test</div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js' integrity='sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==' crossorigin='anonymous'></script>
+  <script>
+    // 使用IIFE會無法使用brower的console控制 因為要用全域變數
+    // 假如用非壓縮的vue 可以用 $vm0 拿到 vm
+    ;(function () {
+      let vm = new Vue({
+        el: '#app',
+        data() {
+          return {
+            isActive: true,
+            link: {
+              href: "https://www.google.com/",
+              target: "_blank",
+              content: "Google"
+            },
+            input: {
+              type: "text"
+            },
+            classArray: ['aaa', 'bbb', 'ccc'],
+            classContent: {
+              aaa: true,
+              bbb: true,
+              ccc: true,
+              dd_ee: true,
+              "ff-gg": true,
+            },
+            styleObj: { color: "red", fontSize: "30px" },
+            styleObj1: { color: "blue" }
+          }
+        }
+      })
+    })()
+  </script>
+</body>
+</html>
