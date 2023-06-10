@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <h1 v-for="value, index in userListArray" :key="value.name" v-show="value.gender==='male'">{{ value.name }}</h1> -->
+    <h1 v-for="value, index in computedUser">{{ value.name }}</h1>
+    <h1 v-for="value, key in userListObj" :key="key">{{ key }}</h1>
+    <span v-for="num in 10">{{ num }},</span>
+    <br>
+    <span v-for="value, index in 'Alex'">{{ `${value}:${index}` }},</span>
+
+    <!-- <div v-if="show">
+      <text-component/>
+    </div>
+    <div v-show="show">
+      <text-component/>
+    </div> -->
+
+    <!-- <template v-if="show">
+      <h1>Hello Vue</h1>
+      <span>description</span>
+    </template>
+    <template v-else>
+      <h1>XXX</h1>
+      <span>description</span>
+    </template> -->
+
+
+    <!-- <div :class="{ active: show }">
+      Now you see me
+    </div>
+    <div :class="{ active: !show }">
+      Now you don't
+    </div>
+
+    <div>
+      {{ show ? "Now you see me" : "Now you don't" }}
+    </div> -->
+
+    <!-- <div v-show="show">
+      Now you see me
+    </div>
+    <div v-show="!show">
+      Now you don't
+    </div> -->
+  
+    <!-- <div v-if="type === 'A'">
+      A Content
+      <input type="text" key="aInput">
+    </div>
+    <div v-else-if="type === 'B'">
+      B Content
+      <input type="text" key="bInput">
+    </div>
+    <div v-else-if="type === 'C'">
+      C Content
+      <input type="text">
+    </div>
+    <div v-else>
+      No Content
+      <input type="text">
+    </div>
+
+    <div>
+      {{ content }}
+    </div> -->
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    Vue.component("TextComponent", {
+      template: '<div>text</div>',
+      created() {
+        console.log("text")
+      },
+    })
+    const dataMapping = {
+      A: 'A Content',
+      B: 'B Content',
+      C: 'C Content',
+    }
+    new Vue({
+      el: '#app',
+      data: {
+        show: false,
+        type: 'A',
+        userListArray: [
+          {
+            name: "Alex",
+            gender: "male"
+          },
+          {
+            name: "Sara",
+            gender: "female"
+          }
+        ],
+        userListObj: {
+          alex: "male",
+          sara: "female"
+        }
+      },
+      computed: {
+        computedUser() {
+          return this.userListArray.filter((user) => {
+            return user.gender === "male"
+          })
+        },
+        content() {
+          return dataMapping[this.type] || "No Content"
+        }
+      }
+    })
+  </script>
+</body>
+</html>
