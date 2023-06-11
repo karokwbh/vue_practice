@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <h1>{{ count }}</h1>
+    <button v-on:click="count -= 1">-1</button>
+    <button v-on:click="count += 1">+1</button> -->
+    <!-- <button v-for="(content, index) of contents" @click="count = index">{{ index }}</button> -->
+    <!-- <button v-for="(content, index) of contents" @click="clickHandler" :data-index="index">{{ index }}</button> -->
+    <button v-for="(content, index) of contents" @click="clickHandler2(index, $event)">{{ index }}</button>
+    <div>
+      <h1 v-for="(content, index) of contents" v-show="count === index">{{ content }}</h1>
+    </div>
+    <!-- <div @click.capture.stop="nestClick(1)" style="border: 1px solid"> -->
+    <div @click.self="nestClick(1)" style="border: 1px solid">
+      <a href="#" @click.self="nestClick(2)" style="padding: 10px;">
+        <button @click.self="nestClick(3)">AAA</button>
+      </a>
+    </div>
+
+    <!-- <div @scroll="scrollHandler" style="height: 200px; border: 1px solid; overflow-y: scroll;"> -->
+    <div @scroll.passive="scrollHandler" style="height: 200px; border: 1px solid; overflow-y: scroll;">
+      <div style="height: 500px;"></div>
+    </div>
+
+    <!-- ctrl的keyup需要用17 -->
+    <!-- <input @keyup.ctrl="nestClick('up')" type="text"> -->
+    <input @keyup.17="nestClick('up')" type="text">
+    <input @click.right.prevent="nestClick('mouse right')" type="text">
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        count: 0,
+        total: 4,
+        contents: ["aaa", "bbb", "ccc", "ddd"],
+      },
+      methods: {
+        clickHandler(event) {
+          // console.log('click', event)
+          this.count = Number(event.target.dataset.index)
+        },
+        clickHandler2(index, event) {
+          console.log(event)
+          this.count = index
+        },
+        // nestClick(event) {
+        //   console.log(event.target)
+        // },
+        nestClick(num) {
+          console.log(num)
+        },
+        scrollHandler() {
+          console.log("sss")
+        },
+        resizeHandler() {
+          console.log("resize")
+        }
+      },
+      mounted() {
+        window.addEventListener("scroll", this.scrollHandler)
+        window.addEventListener("resize", this.resizeHandler)
+      },
+      beforeDestroy() {
+        // 記得要刪除監聽事件
+        window.removeEventListener("scroll", this.scrollHandler)
+        window.removeEventListener("resize", this.resizeHandler)
+      }
+    })
+  </script>
+</body>
+</html>
