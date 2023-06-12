@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <button v-show="nowPage > 1" @click="change(-1)">Prev</button>
+    <div v-for="content of pageList">
+      {{ content }}
+    </div>
+    <button v-show="nowPage < totalPage" @click="change(1)">Next</button> -->
+    <p>{{ text }}</p>
+    <!-- <p><input type="text" v-model="text"></p> -->
+    <!-- <p><input type="text" v-model.number="text"></p> -->
+    <p><input type="text" v-model.lazy="text"></p>
+    <p><input type="text" v-model="text"></p>
+    <p><textarea type="text" v-model="text"></textarea></p>
+    <hr>
+    <!-- <p><input type="checkbox" v-model="edm">訂閱EDM</p> -->
+    <p><input type="checkbox" v-model="edm" true-value="Yes" false-value="No">訂閱EDM</p>
+    <div>
+      <!-- <p><input type="radio" v-model="check" value="A">A</p>
+      <p><input type="radio" v-model="check" value="B">B</p>
+      <p><input type="radio" v-model="check" value="C">C</p> -->
+      <!-- <p><input type="checkbox" v-model="check" value="A">A</p>
+      <p><input type="checkbox" v-model="check" value="B">B</p>
+      <p><input type="checkbox" v-model="check" value="C">C</p> -->
+      <p v-for="(item, index) of checkList">
+        <input type="checkbox" v-model="check" :value="index">{{ item }}
+      </p>
+      <div>
+        <p><input type="radio" value="0" v-model.number="gender">女</p>
+        <p><input type="radio" value="1" v-model.number="gender">男</p>
+      </div>
+    </div>
+    <p>
+      <select v-model="selected">
+        <option value="">Please select one</option>
+        <option>A</option>
+        <!-- 不建議綁物件 因為接讀value會有問題 -->
+        <option :value="bb">B</option>
+        <option value="cc">C</option>
+      </select>
+      <span>Selected: {{ selected }}</span>
+    </p>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      // data: {
+      //   list: ['aaa', 'bbb', 'ccc', 'ddd', 'eee', 'fff', 'ggg', 'hhh', 111, 222, 333, 444],
+      //   perPage: 4,
+      //   nowPage: 1,
+      // },
+      // computed: {
+      //   pageList() {
+      //     let start = (this.nowPage - 1) * this.perPage
+      //     return this.list.slice(start, start + this.perPage)
+      //   },
+      //   totalPage() {
+      //     return Math.ceil(this.list.length / this.perPage)
+      //   }
+      // },
+      // methods: {
+      //   change(direct) {
+      //     this.nowPage += direct
+      //   }
+      // }
+      data: {
+        text: 'Alex QtakuWhat',
+        edm: true,
+        checkList: ["A", "B", "C"],
+        check: [],
+        gender: 0,
+        selected: "",
+        bb: {
+          test: 1
+        }
+      }
+    })
+  </script>
+</body>
+</html>
