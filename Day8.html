@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    li button {
+      display: none;
+    }
+    li:hover button {
+      display: inline;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <!-- 在輸入法按enter後 會先執行 compositionend 才會執行 keyup -->
+      <!-- <input type="text" v-model="inputText"
+      @compositionstart="cstartHandler"
+      @compositionend="cendHandler"
+      @keyup.enter="inputHandler"> -->
+      <input type="text" v-model="inputText"
+      @compositionstart="cstartHandler"
+      @compositionend="cendHandler"
+      @keydown.enter="inputHandler">
+    </p>
+    <p>
+      <button @click="show = 'all'">全部</button>
+      <button @click="show = 'open'">未完成</button>
+      <button @click="show = 'done'">完成</button>
+    </p>
+    <ul>
+      <li v-for="(item, index) of filterList" :key="item.timestamp">
+        <template v-if="editing === item">
+          <input type="text" v-model="editingText">
+          <button @click="completeHandler">完成</button>
+          <button @click="cancelHandler">取消</button>
+        </template>
+        <template v-else>
+          <input type="checkbox" v-model="item.status">{{ item.content }}
+          <button @click="editHandler(item)">修改</button>
+          <button @click="deleteHandler(item)">刪除</button>
+        </template>
+      </li>
+    </ul>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        inputText: '',
+        list: [],
+        compositionStatus: false,
+        editing: null,
+        editingText: '',
+        show: 'all'
+      },
+      computed: {
+        filterList() {
+          // all, open, done
+          if (this.show === "all") {
+            return this.list
+          } else if (this.show === "open") {
+            return this.list.filter((item) => {
+              return item.status === false
+            })
+          } else if (this.show === "done") {
+            return this.list.filter((item) => {
+              return item.status === true
+            })
+          }
+
+          return []
+        },
+      },
+      methods: {
+        inputHandler() {
+          if (this.compositionStatus) {
+            return false
+          }
+          this.list.push({
+            timestamp: new Date().getTime(),
+            status: false,
+            content: this.inputText,
+          })
+          this.inputText = ''
+        },
+        cstartHandler() {
+          this.compositionStatus = true
+        },
+        cendHandler() {
+          this.compositionStatus = false
+        },
+        // 篩選後刪除 index會是錯的
+        // deleteHandler(index) {
+        //   // this.list = this.list.filter((item, i) => {
+        //   //   return i != index
+        //   // })
+        //   this.list.splice(index, 1)
+        // },
+        deleteHandler(item) {
+          this.list = this.list.filter((target) => {
+            return item != target
+          })
+        },
+        editHandler(item) {
+          this.editing = item
+          this.editingText = item.content
+        },
+        completeHandler() {
+          this.editing.content = this.editingText
+          this.cancelHandler()
+        },
+        cancelHandler() {
+          this.editingText = ''
+          this.editing = null
+        }
+      }
+    })
+  </script>
+</body>
+</html>
