@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <basic-component :basic-name="name" active :is-active="true" :inside-object="obj"></basic-component> -->
+    <basic-component v-bind="basicBind" str="danger" style="background: blue;"></basic-component>
+    <!-- <adv-component></adv-component> -->
+    <!-- <input-component checked class="AAA"></input-component> -->
+    <input-component checked="checked" class="AAA"></input-component>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    const InputComponent = {
+      template: `
+        <label>
+          <input type="checkbox" v-bind="$attrs" class="BBB"/>
+        </label>
+      `,
+      inheritAttrs: false,
+      created() {
+        console.log('inside created')
+      },
+      mounted() {
+        console.log('inside mounted')
+      },
+    }
+    const BasicComponent = {
+      // template: `<div>{{ basicName }}</div>`,
+      template: `<div style="background:red">{{ insideCount }} <button @click="insideCount++">+</button></div>`,
+      // props: ['basicName'],
+      props: {
+        basicName: {
+          type: String,
+          required: true,
+          default: 'XXX',
+        },
+        active: Boolean,
+        "is-active": Boolean,
+        insideObject: Object,
+        count: Number,
+        object: {
+          type: Object,
+          default: undefined,
+        },
+        ary: {
+          type: Array,
+          default: undefined,
+        },
+        str: {
+          type: String,
+          default: undefined,
+          validator: function (value) {
+            // The value must match one of these strings
+            return ['success', 'warning', 'danger'].includes(value)
+          },
+        },
+        num: {
+          type: Number,
+          default: undefined,
+        }
+      },
+      data() {
+        return {
+          insideCount: this.count,
+        }
+      },
+      created() {
+        console.log('created')
+      },
+      mounted() {
+        console.log('mounted')
+      },
+    }
+  
+    // const AdvComponent = {
+    //   template: `<basic-component></basic-component>`,
+    //   components: {
+    //     BasicComponent
+    //   }
+    // }
+
+    // let components = {
+    //   BasicComponent,
+    //   AdvComponent
+    // }
+  
+    // global registration
+    Vue.component("basic-component", BasicComponent)
+    // Vue.component("adv-component", AdvComponent)
+    Vue.component("input-component", InputComponent)
+
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          name: "Alex",
+          count: 0,
+          obj: {
+            count: 0,
+          },
+        }
+      },
+      computed: {
+        basicBind() {
+          return {
+            "basic-name": this.name,
+            active: true,
+            "is-active": true,
+            "inside-object": this.obj,
+            count: this.count,
+          }
+        }
+      }
+      // components: {
+      //   BasicComponent,
+      //   AdvComponent
+      // }
+      // components,
+    })
+    // new Vue({
+    //   el,
+    //   data,
+    //   computed,
+    //   methods,
+    //   lifecycle,
+    //   watch
+    // })
+  </script>
+</body>
+</html>
