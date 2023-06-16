@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <!-- <basic-component v-model="test" @component-event="eventHandler"/> -->
+    <!-- <basic-component v-model="test" /> -->
+    <!-- <basic-component v-model="test" @click.native="eventHandler"/> -->
+    <!-- <basic-component v-model="test" @click="eventHandler"/> -->
+    <!-- <basic-component v-model="test" :title="title" @title-event="eventHandler" /> -->
+    <!-- <basic-component v-model="test" :title.sync="title" /> -->
+    <basic-component v-model="test" v-bind.sync="content" />
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js"></script>
+  <script>
+    // camelCase
+    // PascalCase
+    // kebab-case
+    // snake_case
+
+    Vue.component('BasicComponent', {
+      // template: `
+      //   <div class="basic-component" @click="clickHandler">
+      //     BasicComponent
+      //   </div>
+      // `,
+      // template: `
+      //   <div class="basic-component" v-on="$listeners">
+      //     BasicComponent
+      //   </div>
+      // `,
+      template: `
+        <div class="basic-component" @click="clickHandler">
+          BasicComponent {{ title }}
+        </div>
+      `,
+      model: {
+        prop: "active",
+        event: "component-event",
+      },
+      props: {
+        active: {
+          type: Boolean,
+          default: false,
+        },
+        // value: {
+        //   type: Boolean,
+        //   default: false,
+        // },
+        title: {
+          type: String,
+          required: true,
+        },
+        description: {
+          type: String,
+          required: true,
+        }
+      },
+      methods: {
+        clickHandler() {
+          this.$emit('component-event', !this.active)
+          // this.$emit('input', !this.active)
+          // this.title = "New Title"
+          // this.$emit('title-event', 'New Title')
+          this.$emit('update:title', 'New Title')
+        }
+      }
+    })
+
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          test: true,
+          content: {
+            title: 'Hello World',
+            description: 'Hello World'
+          }
+        }
+      },
+      methods: {
+        // eventHandler() {
+        //   console.log("this is component event")
+        // }
+        // eventHandler(value) {
+        //   this.title = value
+        // }
+      }
+    })
+    
+  </script>
+</body>
+</html>
